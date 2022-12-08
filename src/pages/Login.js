@@ -3,13 +3,18 @@ import login from '../assests/images/login.png'
 import {Form, message} from 'antd'
 import { Link, useNavigate } from 'react-router-dom'
 import { LoginUser } from './apis/authentication'
+import { useDispatch } from 'react-redux'
+import { HIDE_LOADING, SHOW_LOADING } from '../redux/slice/alertSlice'
+
 
 const Login = () => {
   const navigate = useNavigate()
+  const dispatch = useDispatch()
   const onFinish = async (values) => {
     try {
-    
+      dispatch(SHOW_LOADING())
       const response = await LoginUser(values)
+      dispatch(HIDE_LOADING())
       if(response.success){
           message.success(response.message)
           localStorage.setItem("user" , JSON.stringify(response.data))
@@ -20,6 +25,7 @@ const Login = () => {
       }
      } catch (error) {
       message.error(error.message)
+      dispatch(SHOW_LOADING())
      }
   }
   return (

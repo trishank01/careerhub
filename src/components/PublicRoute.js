@@ -1,14 +1,13 @@
 //import {useNavigate } from 'react-router-dom'
 
+import DefaultLayout from "./DefaultLayout"
+
 const PublicRoute = ({children}) => {
-    //const navigate = useNavigate()
-    const user = JSON.parse(localStorage.getItem('user'))
-    if(user){
-         window.location.href  = "/"
-    }else {
-        return children
-    }
+    return  <DefaultLayout> {children} </DefaultLayout>  
 }
 
 export default PublicRoute
+
+
+
 

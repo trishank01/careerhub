@@ -68,7 +68,11 @@ export const RegisterUser = async(payload) => {
          payload.password = encryptedPassword
 
          //adding user in db
-       const response = await addDoc(collection(db , "users") ,payload)
+       const response = await addDoc(collection(db , "users") ,{
+        email : payload.email,
+        password : payload.password,
+        isAdmin : false
+       })
        return {
         success : true,
         message : "User Registered Successfully",

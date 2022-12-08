@@ -1,23 +1,29 @@
 import React from 'react'
 import register from '../assests/images/register.png'
 import {Form, message} from 'antd'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { RegisterUser } from './apis/authentication'
+import { useDispatch } from 'react-redux'
+import { HIDE_LOADING, SHOW_LOADING } from '../redux/slice/alertSlice'
 
 
 const Register = () => {
-
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
   const onFinish = async(values) => {
     try {
-    
+      dispatch(SHOW_LOADING())
       const response = await RegisterUser(values)
+      dispatch(HIDE_LOADING())
       if(response.success){
           message.success(response.message)
+          navigate("/login")
       }else{
           message.error(response.message)
       }
      } catch (error) {
       message.error(error.message)
+      dispatch(HIDE_LOADING())
      }
 
   }
