@@ -24,7 +24,7 @@ const PersonalInfo = () => {
 
       <Col span={8}>
         <Form.Item label="Email" name="email">
-          <input type="email" className={InputClass} />
+          <input disabled type="email" className={InputClass} />
         </Form.Item>
       </Col>
 

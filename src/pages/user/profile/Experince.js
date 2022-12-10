@@ -4,7 +4,7 @@ import { CiCircleRemove } from "react-icons/ci";
 
 
 const InputClass =
-  "border-[2px] border-brand-black w-[95%] focus:outline-none focus:border-[2px] focus:border-brand-green py-2";
+  "border-[2px] border-brand-black w-[95%] focus:outline-none focus:border-[2px] focus:border-brand-green py-2 pl-2";
 
 const Experince = () => {
   return (

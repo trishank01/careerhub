@@ -1,15 +1,23 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import login from '../assests/images/login.png'
 import {Form, message} from 'antd'
-import { Link, useNavigate } from 'react-router-dom'
+import { json, Link, useParams } from 'react-router-dom'
 import { LoginUser } from './apis/authentication'
 import { useDispatch } from 'react-redux'
 import { HIDE_LOADING, SHOW_LOADING } from '../redux/slice/alertSlice'
 
 
 const Login = () => {
-  const navigate = useNavigate()
+
   const dispatch = useDispatch()
+  const path = window.location.pathname
+  const user = {
+    id : "public"
+  }
+  localStorage.setItem('path' , JSON.stringify(path))
+
+  localStorage.setItem("user" , JSON.stringify(user))
+  
   const onFinish = async (values) => {
     try {
       dispatch(SHOW_LOADING())
@@ -18,10 +26,11 @@ const Login = () => {
       if(response.success){
           message.success(response.message)
           localStorage.setItem("user" , JSON.stringify(response.data))
-          navigate("/")
+        
 
       }else{
           message.error(response.message)
+         
       }
      } catch (error) {
       message.error(error.message)

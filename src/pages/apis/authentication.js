@@ -1,4 +1,4 @@
-import {addDoc, collection,  getDocs,  query, where} from 'firebase/firestore'
+import {addDoc, collection,  doc,  getDocs,  query, where} from 'firebase/firestore'
 import { db } from '../../firebase/config'
 import CryptoJS from 'crypto-js'
 
@@ -15,10 +15,8 @@ export const LoginUser = async(payload) => {
                 message : "User not found"
             }
         }else {
-            const snapshotData = querySnapShot.docs.map(doc => doc.data({
-                id : doc.id,
-                ...doc.data()
-            }))
+            const snapshotData = querySnapShot.docs.map(doc => ({id : doc.id , ...doc.data()}))
+       
             const user = snapshotData[0]
             const decryptedPassword = CryptoJS.AES.decrypt(
                 user.password,
@@ -30,7 +28,9 @@ export const LoginUser = async(payload) => {
                     message : "Login Successfull...",
                     data : {
                         ...user,
-                        password : ''
+                        password : '',
+                        isAdmin : '',
+                     
                     }
                 }
             }else {
@@ -69,6 +69,7 @@ export const RegisterUser = async(payload) => {
 
          //adding user in db
        const response = await addDoc(collection(db , "users") ,{
+        name : payload.name,
         email : payload.email,
         password : payload.password,
         isAdmin : false
