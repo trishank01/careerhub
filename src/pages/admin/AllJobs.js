@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom'
 
 
 
-import {AiFillDelete, AiFillEdit} from 'react-icons/ai'
+import {AiFillDelete} from 'react-icons/ai'
 import { deleteJobById, editJobsDetails, getAllJobs } from '../apis/jobs'
 import { HIDE_LOADING, SHOW_LOADING } from '../../redux/slice/alertSlice'
 import PageTitle from '../../components/PageTitle'

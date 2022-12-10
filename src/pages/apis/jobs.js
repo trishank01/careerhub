@@ -1,4 +1,4 @@
-import { addDoc, collection, deleteDoc, doc, getDoc, getDocs, orderBy, query, updateDoc } from "firebase/firestore";
+import { addDoc, collection, deleteDoc, doc, getDoc, getDocs, orderBy, query, updateDoc, where } from "firebase/firestore";
 import moment from "moment/moment";
 import { db } from "../../firebase/config";
 
@@ -128,5 +128,101 @@ export const getAllJobs = async () => {
      }
    }
 }
+
+export const applyJobPost = async (payload) => {
+    const user = JSON.parse(localStorage.getItem("user"))
+    const job = payload
+
+    try {
+       await addDoc(collection(db , "applications") , {
+        jobId : job.id,
+        jobTitle : job.title,
+        company : job.company,
+        userId : user.id,
+        userName : user.name , 
+        email : user.email,
+        status: "pending",
+        phoneNumber : user?.phoneNumber || "",
+        appliedOn : moment().format("DD-MM-YYYY HH:mm A")
+       })
+       return {
+        success : true,
+        message : "Job Applied Successfully"
+       }
+    } catch (error) {
+      console.log(error.message)
+         return {
+          success : false,
+          message : "Something went Wrong"
+         }
+         
+    }
+}
+
+
+export const getApplicationByUserId = async (userId) => {
+  try {
+    const applications = [];
+    const qry = query(collection(db , "applications") , where("userId" ,"==", userId ))
+    const querySnapShot = await getDocs(qry)
+    querySnapShot.forEach((doc) => { 
+        applications.push({id : doc.id , ...doc.data()})
+   
+    })
+    return {
+      success : true,
+      data : applications
+    }
+  } catch (error) {
+     return {
+      success : false,
+      message : "Something went wrong"
+     }
+  }
+}
+
+export const getApplicationByJobId = async (jobId) => {
+  try {
+    const applications = [];
+    const qry = query(collection(db , "applications") , where("jobId" ,"==", jobId ))
+    const querySnapShot = await getDocs(qry)
+    querySnapShot.forEach((doc) => { 
+        applications.push({id : doc.id , ...doc.data()})
+   
+    })
+    return {
+      success : true,
+      data : applications
+    }
+  } catch (error) {
+     return {
+      success : false,
+      message : "Something went wrong"
+     }
+  }
+}
+
+
+export const getAllApplications = async () => {
+  try {
+    const applications = [];
+    const qry = query(collection(db , "applications"))
+    const querySnapShot = await getDoc(qry)
+    querySnapShot.forEach((doc) => { 
+        applications.push({id : doc.id , ...doc.data()})
+   
+    })
+    return {
+      success : true,
+      data : applications
+    }
+  } catch (error) {
+     return {
+      success : false,
+      message : "Something went wrong"
+     }
+  }
+}
+
 
  

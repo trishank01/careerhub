@@ -1,4 +1,3 @@
-import { async } from '@firebase/util'
 import {collection, doc,  getDoc,  getDocs,  updateDoc} from 'firebase/firestore'
 import { db } from '../../firebase/config'
 
@@ -36,6 +35,7 @@ export const getUserProfile = async(id) => {
                 }
             }
         } catch (error) {
+            
              return {
                 success : false,
                 message : "Something went wrong"

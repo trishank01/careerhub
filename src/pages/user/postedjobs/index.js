@@ -11,6 +11,7 @@ const Postedjobs = () => {
     const navigate = useNavigate()
      const dispatch = useDispatch()
     const [data , setData] = useState([])
+    const [showAppliedCandidates , setShowappliedCandidates] = useState(false)
 
     const getData = async () => {
       try {

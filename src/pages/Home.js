@@ -35,13 +35,16 @@ const Home = () => {
     <div>
       <PageTitle title="Welcome to CareerHub" />
       <Filters />
-      <Row gutter={[10, 10]} className="mt-2">
+      <Row gutter={[15, 15]} className="mt-2">
         {data.map((job) => {
           return (
-            <Col span={8}>
+            <Col span={8} key={data.id}>
               <div className="border-2 border-solid p-3">
                 <h3 className="uppercase text-[18px]">{job.title}</h3>
                 <div style={{ borderBottom: "2px solid black" }}></div>
+                  
+                  <div className="flex flex-col gap-2">
+
                 <div className="flex justify-between mt-1">
                   <span>Company</span>
                   <span>{job.company}</span>
@@ -62,6 +65,8 @@ const Home = () => {
                   <span>Last Date To Apply</span>
                   <span>{job.lastDateToApply}</span>
                 </div>
+                </div> 
+                <button className="w-[100%] mt-2 bg-brand-green text-white border-none py-2 px-3 cursor-pointer" onClick={() => navigate(`/job-description/${job.id}`)}>Apply Now</button>
               </div>
             </Col>
           );

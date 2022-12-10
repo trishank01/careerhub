@@ -11,12 +11,12 @@ const Login = () => {
 
   const dispatch = useDispatch()
   const path = window.location.pathname
-  const user = {
-    id : "public"
-  }
   localStorage.setItem('path' , JSON.stringify(path))
+  // const user = {
+  //   id : "public"
+  // }
 
-  localStorage.setItem("user" , JSON.stringify(user))
+  // localStorage.setItem("user" , JSON.stringify(user))
   
   const onFinish = async (values) => {
     try {
