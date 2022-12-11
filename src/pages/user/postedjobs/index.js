@@ -4,14 +4,16 @@ import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import PageTitle from '../../../components/PageTitle'
 import { HIDE_LOADING, SHOW_LOADING } from '../../../redux/slice/alertSlice'
-import { deleteJobById, getPostedJobsByUserId } from '../../apis/jobs'
+import { deleteJobById, getPostedJobsByUserId  ,getApplicationByJobId} from '../../apis/jobs'
 import {AiFillDelete, AiFillEdit} from 'react-icons/ai'
+import AppliedCandidates from './AppliedCandidates'
 
 const Postedjobs = () => {
     const navigate = useNavigate()
      const dispatch = useDispatch()
     const [data , setData] = useState([])
     const [showAppliedCandidates , setShowappliedCandidates] = useState(false)
+    const [appliedCandidates, setAppliedCandidates] = useState([])
 
     const getData = async () => {
       try {
@@ -45,6 +47,25 @@ const Postedjobs = () => {
        dispatch(HIDE_LOADING())
     }
 
+
+    const getAppliedCandidates = async (id) => {
+        try {
+          dispatch(SHOW_LOADING())
+          const response = await getApplicationByJobId(id)
+          if(response.success){
+            setAppliedCandidates(response.data)
+            if(!showAppliedCandidates){
+              setShowappliedCandidates(true)
+            }
+          }
+          dispatch(HIDE_LOADING())
+        } catch (error) {
+          dispatch(HIDE_LOADING())
+          message.error(error.message)
+          
+        }
+    }
+
     const columns = [
         {
           title : "Title",
@@ -70,7 +91,8 @@ const Postedjobs = () => {
           title : "Action",
           dataIndex : "action",
           render : (text , record) => (
-            <div className='flex gap-3 cursor-pointer'>
+            <div className='flex gap-3 cursor-pointer items-center'>
+               <span onClick={() => getAppliedCandidates(record.id)}>Candidates</span>
                <AiFillEdit size={20} onClick={() => navigate(`/posted-jobs/edit/${record.id}`)}/>
                <AiFillDelete size={20} onClick={() => deleteJob(record.id)}/>
             </div> 
@@ -90,7 +112,16 @@ const Postedjobs = () => {
             <PageTitle title="Posted Jobs"/>
             <button className='bg-brand-green border-none py-3 px-4 text-white font-semibold tracking-wide rounded-md cursor-pointer' onClick={() => navigate("/posted-jobs/new")}>NEW JOBS</button>
          </div>
-         <Table columns={columns} dataSource={data}></Table>
+         <Table columns={columns} dataSource={data}/>
+
+          {showAppliedCandidates && <AppliedCandidates 
+          showAppliedCandidates={showAppliedCandidates} 
+          setShowappliedCandidates={setShowappliedCandidates}
+          appliedCandidates={appliedCandidates}
+          reloadData={getAppliedCandidates}
+          />
+          }
+      
     </div>
   )
 }

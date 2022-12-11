@@ -2,6 +2,7 @@ import { Tabs , Form, message } from 'antd'
 import TabPane from 'antd/es/tabs/TabPane'
 import React, { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
+import { useNavigate, useParams } from 'react-router-dom'
 import PageTitle from '../../../components/PageTitle'
 import { HIDE_LOADING, SHOW_LOADING } from '../../../redux/slice/alertSlice'
 import { getUserProfile, updateUserProfile } from '../../apis/users'
@@ -17,6 +18,10 @@ const Profile =  () => {
 
   const dispatch = useDispatch()
   const [userData, setUserData] = useState(null)
+
+  const params = useParams()
+  const navigate = useNavigate()
+  const loggedInUser = JSON.parse(localStorage.getItem("user"))
 
 
 const onfinish = async (values) => {
@@ -39,8 +44,8 @@ const onfinish = async (values) => {
 const getData = async () => {
         try {
           dispatch(SHOW_LOADING())
-          const user = JSON.parse(localStorage.getItem("user"))
-          const response = await getUserProfile(user.id)
+         // const user = JSON.parse(localStorage.getItem("user"))
+          const response = await getUserProfile(params.id)
           dispatch(HIDE_LOADING())
           if(response.success){
             setUserData(response.data)
@@ -73,8 +78,8 @@ useEffect(() => {
             </TabPane>
         </Tabs>
          <div className="flex justify-end gap-3 pb-3">
-          <button className="p-3 border-none font-semibold bg-red-500 text-white rounded-md cursor-pointer">Cancel</button>
-          <button className="p-3 border-none font-semibold bg-brand-green text-white rounded-md cursor-pointer" type='submit'>Save</button>
+          <button className="p-3 border-none font-semibold bg-red-500 text-white rounded-md cursor-pointer" type='button' onClick={() => navigate("/")}>Cancel</button>
+          {params.id === loggedInUser.id && <button className="p-3 border-none font-semibold bg-brand-green text-white rounded-md cursor-pointer" type='submit'>Save</button>}
          </div>
    </Form>}
     </div>

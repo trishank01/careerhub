@@ -11,6 +11,11 @@ const Home = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [data, setData] = useState([]);
+  const [filters, setFilters] = useState({
+    location : "",
+    industry : "",
+    experience : "",
+  })
 
   const getData = async () => {
     try {
@@ -34,7 +39,7 @@ const Home = () => {
   return (
     <div>
       <PageTitle title="Welcome to CareerHub" />
-      <Filters />
+      {/* <Filters filters={filters} setFilters={setFilters} setData={setData}/> */}
       <Row gutter={[15, 15]} className="mt-2">
         {data.map((job) => {
           return (

@@ -11,6 +11,7 @@ import { HIDE_LOADING, SHOW_LOADING } from "../redux/slice/alertSlice";
 const Sidebar = ({isOpen}) => {
   const navigate = useNavigate();
   const dispatch = useDispatch()
+  const user = JSON.parse(localStorage.getItem("user"));
 
 
   const publicMenu = [
@@ -31,7 +32,7 @@ const Sidebar = ({isOpen}) => {
 
   const [menuToRender, setmenuToRender] = useState(publicMenu)
   const path = JSON.parse(localStorage.getItem("path"))
-  console.log(path)
+
 
   const userMenu = [
     {
@@ -54,7 +55,7 @@ const Sidebar = ({isOpen}) => {
     },
     {
       title: "Profile",
-      onClick: () => navigate("/profile"),
+      onClick: () => navigate(`/profile/${user.id}`),
       icon: <ImProfile />,
       path : "/profile"
     },
